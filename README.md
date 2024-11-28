@@ -42,8 +42,7 @@ project/
 │   └── ...                 # Other server files
 │
 └── site/                   # Site (frontend) directory
-    ├── public/             # Static files for the site
-    ├── src/                # Frontend source code
+    ├── dist/             # Static files for the site
     ├── package.json        # Frontend configuration
     └── ...                 # Other frontend files
 Installing Dependencies for Server and Site

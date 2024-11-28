@@ -52,15 +52,18 @@ Navigate to the server directory and run:
 bash
 
 npm install
+
 Site:
 Navigate to the site directory and run:
 
 bash
 
 npm install
+
 Notes
 Make sure all necessary dependencies are installed.
 Configure settings for database or other services if required.
+
 License
 This project is licensed under the Creative Commons Zero v1.0 Universal (CC0 1.0) Public Domain Dedication. This means you can copy, modify, distribute, and perform the work, even for commercial purposes, without asking for permission.
 

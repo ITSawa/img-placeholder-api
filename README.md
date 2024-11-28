@@ -93,7 +93,7 @@ To run the server, use either `npm start` or `node src/server.js`.
 
 1. Navigate to the server directory:  
    ```bash  
-   cd project/server  
+   cd {current project directory}/server  
 Install dependencies:
 
 bash

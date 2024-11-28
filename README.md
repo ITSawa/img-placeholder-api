@@ -34,17 +34,28 @@ Project Structure
 php
 
 project/
+
 │
 ├── server/                 # Server directory
+
 │   ├── src/                # Server source code
+
 │   │   └── server.js       # Server entry point
+
 │   ├── package.json        # Server configuration
+
 │   └── ...                 # Other server files
+
 │
+
 └── site/                   # Site (frontend) directory
+
     ├── dist/             # Static files for the site
+    
     ├── package.json        # Frontend configuration
+    
     └── ...                 # Other frontend files
+    
 Installing Dependencies for Server and Site
 Server:
 Navigate to the server directory and run:

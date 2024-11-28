@@ -1,0 +1,5 @@
+server:
+  port: 3045
+admin:
+  login: admin
+  password: admin

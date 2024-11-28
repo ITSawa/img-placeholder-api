@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Documentation</title>
+    <style>
+      /* Global styles */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        scroll-behavior: smooth;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #534f91;
+        color: #e4e4e4;
+        line-height: 1.6;
+      }
+
+      /* Header styles */
+      header {
+        color: #fff;
+        text-align: center;
+        padding: 30px 20px;
+        transition: background 0.5s ease;
+      }
+
+      header h1 {
+        font-size: 2.5rem;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        animation: fadeIn 1s ease-out;
+        padding-bottom: 30px;
+      }
+
+      header h1:hover {
+        color: #f1f1f1;
+        cursor: pointer;
+      }
+
+      /* Navigation menu styles */
+      nav ul {
+        display: flex;
+        justify-content: center;
+        padding: 0;
+        margin-top: 20px;
+        background-color: rgba(26, 16, 43, 0.5);
+        border-radius: 25px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      nav ul li {
+        margin: 0 20px;
+        list-style: none;
+      }
+
+      nav ul li a {
+        color: #8b87cf;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 12px 18px;
+        display: inline-block;
+        transition: color 0.3s ease, transform 0.3s ease;
+        border-radius: 20px;
+      }
+
+      nav ul li a:hover {
+        color: #fff;
+        transform: translateY(-10px);
+        background-color: #6e66dd;
+      }
+
+      /* Section styling */
+      section {
+        margin: 40px auto;
+        padding: 30px;
+        background-color: rgba(30, 30, 30, 0.8);
+        border-radius: 20px;
+        max-width: 1100px;
+        box-shadow: 0 5px 15px rgba(32, 26, 51, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background: linear-gradient(135deg, #6a60c4, #6859aa);
+      }
+
+      section:hover {
+        transform: scale(1.01);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      section h2 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #cabee7;
+        text-transform: uppercase;
+      }
+
+      section h3 {
+        font-size: 1.4rem;
+        margin-top: 20px;
+        color: #a699ec;
+      }
+
+      section p {
+        font-size: 1.1rem;
+        color: #e4e4e4;
+      }
+
+      /* Code block styling */
+      pre {
+        background-color: #36303f;
+        color: #e4e4e4;
+        padding: 20px;
+        border-radius: 16px;
+        font-size: 1rem;
+        overflow-x: auto;
+        margin-top: 15px;
+        margin-bottom: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 1s ease-out;
+      }
+
+      /* Footer styling */
+      footer {
+        background-color: rgba(0, 0, 0, 0.7);
+        color: #cabee7;
+        text-align: center;
+        padding: 25px;
+        margin-top: 100px;
+        font-size: 1rem;
+        box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      footer a {
+        color: #f1f1f1;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s ease;
+      }
+
+      footer a:hover {
+        color: #796ad1;
+      }
+
+      /* Animation keyframes */
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .footer-links {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      /* Responsive styles */
+      @media (max-width: 768px) {
+        header h1 {
+          font-size: 1.8rem;
+        }
+
+        nav ul {
+          flex-direction: column;
+          padding: 10px;
+        }
+
+        nav ul li {
+          margin: 10px 0;
+        }
+
+        section {
+          padding: 20px;
+        }
+
+        footer {
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>API Documentation</h1>
+      <nav>
+        <ul>
+          <li><a href="#intro">Introduction</a></li>
+          <li><a href="#endpoints">Endpoints</a></li>
+          <li><a href="#examples">Code Examples</a></li>
+          <li><a href="#styling">Styling</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section id="intro">
+      <h2>Introduction</h2>
+      <p>
+        This API allows you to fetch random images from the server and display
+        them in the user interface. We also provide code examples and
+        recommendations for integrating it into your project.
+      </p>
+    </section>
+
+    <section id="endpoints">
+      <h2>Endpoints</h2>
+
+      <h3>1. Fetch a Specific Image</h3>
+      <p>
+        This endpoint retrieves a specific image based on a number provided in
+        the request.
+      </p>
+      <pre><code>GET /api/images/:any</code></pre>
+      <p>Example request (for image number 123):</p>
+      <pre><code>
+fetch("/api/images/123")
+  .then((response) => response.blob())
+  .then((blob) => {
+    const imgURL = URL.createObjectURL(blob);
+    document.getElementById("image-container").src = imgURL;
+  })
+  .catch((error) => console.error("Error fetching image:", error));
+      </code></pre>
+
+      <h3>2. Fetch a Random Image</h3>
+      <p>This endpoint retrieves a random image in Blob format.</p>
+      <pre><code>GET /api/images-random</code></pre>
+      <p>Example request:</p>
+      <pre><code>
+fetch("/api/images-random")
+  .then((response) => response.blob())
+  .then((blob) => {
+    const imgURL = URL.createObjectURL(blob);
+    document.getElementById("image-container").src = imgURL;
+  })
+  .catch((error) => console.error("Error fetching image:", error));
+      </code></pre>
+
+      <h3>3. Fetch Multiple Images</h3>
+      <p>
+        This endpoint allows you to fetch a specified number of random images.
+        The "quantity" parameter defines the number of images you want to
+        retrieve (1 to 10 images).
+      </p>
+      <pre><code>GET /api/images-quantity/:quantity</code></pre>
+      <p>Example request (for 5 images):</p>
+      <pre><code>
+fetch("/api/images-quantity/5")
+  .then((response) => response.json())
+  .then((images) => {
+    images.forEach((imgData) => {
+      const imgURL = imgData.url;
+      const img = document.createElement("img");
+      img.src = imgURL;
+      document.getElementById("image-container").appendChild(img);
+    });
+  })
+  .catch((error) => console.error("Error fetching images:", error));
+      </code></pre>
+    </section>
+
+    <section id="examples">
+      <h2>Code Examples</h2>
+      <p>
+        Below are code examples for working with images fetched through the API.
+      </p>
+
+      <h3>Fetch Image from Server and Display in UI</h3>
+      <pre><code>
+let isLoading = false;
+let imgIndexIncrement = 0;
+
+function fetchImageFromServer() {
+  const endpoint = "/api/images-random";
+  
+  fetch(endpoint)
+    .then((res) => res.blob())
+    .then((blob) => {
+      const imgURL = URL.createObjectURL(blob);
+      document.getElementById("image").src = imgURL;
+      isLoading = false;
+    })
+    .catch((error) => console.log(error));
+}
+
+// Trigger image fetch when page loads
+document.addEventListener("DOMContentLoaded", fetchImageFromServer);
+      </code></pre>
+    </section>
+
+    <section id="styling">
+      <h2>Styling</h2>
+      <p>
+        Here are some tips and examples for styling the images and layout using
+        CSS.
+      </p>
+
+      <h3>Styling the Image Container</h3>
+      <p>
+        You can style the image container to adjust the width, height, margins,
+        and borders to fit the design.
+      </p>
+      <pre><code>
+#image-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  padding: 20px;
+}
+
+#image-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+#image-container img:hover {
+  transform: scale(1.05);
+}
+  </code></pre>
+
+      <h3>Centering Images</h3>
+      <p>
+        To ensure images are centered within the page, you can use the following
+        CSS rules.
+      </p>
+      <pre><code>
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+img {
+  margin: 0 auto;
+  display: block;
+}
+  </code></pre>
+
+      <h3>Responsive Image Layout</h3>
+      <p>
+        Use media queries to create a responsive layout that adapts to different
+        screen sizes.
+      </p>
+      <pre><code>
+@media (max-width: 768px) {
+  #image-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #image-container img {
+    width: 100%;
+  }
+}
+  </code></pre>
+    </section>
+
+    <footer>
+      <p>Developed with ❤️ by ITSawa</p>
+      <div class="footer-links">
+        <a href="https://github.com/ITSawa">GitHub</a>
+        <a href="/">Home</a>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ImgBoard</title>
+    <link rel="stylesheet" href="./src/index.scss" />
+
+    <!-- SEO Tags -->
+    <meta
+      name="description"
+      content="ImgBoard - Hosting API for images and an image board"
+    />
+    <meta
+      name="keywords"
+      content="images, image board, hosting, API, pictures"
+    />
+    <meta name="author" content="Your Name or Company" />
+
+    <!-- Open Graph Tags for social media -->
+    <meta property="og:title" content="ImgBoard" />
+    <meta
+      property="og:description"
+      content="Hosting API for images and an image board"
+    />
+    <meta property="og:image" content="URL_to_your_image" />
+    <meta property="og:url" content="URL_of_your_site" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ImgBoard" />
+    <meta
+      name="twitter:description"
+      content="Hosting API for images and an image board"
+    />
+    <meta name="twitter:image" content="URL_to_your_image" />
+    <meta name="twitter:site" content="@your_twitter_handle" />
+
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="robots" content="index, follow" />
+  </head>
+
+  <body>
+    <header>
+      <nav class="navbar">
+        <label onclick="window.location.href = '/'" for="">ImgBoard</label>
+        <button class="burger"><span></span><span></span><span></span></button>
+        <ul class="nav-list">
+          <li>
+            <a href="#img-board" id="img-board-link" class="link">Board</a>
+          </li>
+          <li><a href="/docs" class="link">Docs</a></li>
+          <script>
+            document.addEventListener("DOMContentLoaded", (event) => {
+              document.getElementById("img-board-link").forEach((link) => {
+                link.addEventListener("click", function (e) {
+                  e.preventDefault();
+                  const targetId = this.getAttribute("href").substring(1);
+                  document.getElementById(targetId).scrollIntoView({
+                    behavior: "smooth",
+                  });
+                });
+              });
+            });
+          </script>
+          <li><a onclick="showContact()" class="link">Contact</a></li>
+          <li><a onclick="showInfo()" class="link">Info</a></li>
+          <li>
+            <button onclick="openLoadMine()">Load mine</button>
+          </li>
+        </ul>
+      </nav>
+      <div class="header-content">
+        <h1>Simple API for Random Images and an Image Board</h1>
+        <p>
+          Quickly set up an image board and fetch random images from the server.
+        </p>
+
+        <div class="img-board mask-radial" id="header-img-board">
+          <div class="img-board__column">
+            <img src="" alt="Image 1" />
+            <img src="" alt="Image 2" />
+          </div>
+          <div class="img-board__column">
+            <img src="" alt="Image 3" />
+            <img src="" alt="Image 4" />
+          </div>
+          <div class="img-board__column">
+            <img src="" alt="Image 5" />
+            <img src="" alt="Image 6" />
+          </div>
+          <div class="img-board__column">
+            <img src="" alt="Image 7" />
+            <img src="" alt="Image 8" />
+          </div>
+        </div>
+
+        <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            async function fetchAndPopulateImages() {
+              try {
+                // Fetch the 8 random images from the server
+                const response = await fetch("/api/images-random-to-header");
+                if (!response.ok) {
+                  throw new Error("Failed to fetch images");
+                }
+                const images = await response.json(); // Expecting an array of Buffer objects
+
+                // Ensure there are exactly 8 images
+                if (images.length !== 8) {
+                  throw new Error(
+                    "Expected 8 images, received " + images.length
+                  );
+                }
+
+                // Select all image elements in the columns
+                const imgElements = document.querySelectorAll(
+                  ".img-board__column img"
+                );
+
+                // Insert the fetched images into the corresponding img elements
+                images.forEach((imageBuffer, index) => {
+                  if (imgElements[index]) {
+                    const uint8Array = new Uint8Array(imageBuffer.data);
+                    const blob = new Blob([uint8Array], { type: "image/jpeg" });
+                    const url = URL.createObjectURL(blob);
+                    imgElements[index].src = url;
+                    imgElements[index].alt = `Image ${index + 1}`;
+                  }
+                });
+              } catch (error) {
+                console.error("Error fetching images:", error);
+              }
+            }
+
+            fetchAndPopulateImages();
+          });
+        </script>
+      </div>
+    </header>
+    <main>
+      <div class="img-board mask-linear" id="img-board">
+        <div class="img-board__column">
+          <div id="load-more-1"></div>
+        </div>
+        <div class="img-board__column">
+          <div id="load-more-2"></div>
+        </div>
+        <div class="img-board__column">
+          <div id="load-more-3"></div>
+        </div>
+        <div class="img-board__column">
+          <div id="load-more-4"></div>
+        </div>
+      </div>
+      <section class="auto-scroll">
+        <div class="range-slider">
+          <input type="range" id="image-range" min="1" max="5" value="5" />
+          <span id="range-value">5</span>
+        </div>
+        <button id="start-auto-scroll">Auto-scroll</button>
+      </section>
+    </main>
+
+    <div id="fullscreen-overlay">
+      <img id="fullscreen-image" src="" alt="Fullscreen Image" />
+    </div>
+
+    <!-- forms -->
+    <div class="overlay" id="info-modal">
+      <div class="info">
+        <h2>Info</h2>
+        <p>
+          Welcome to our Image Board and Hosting Platform! Here, you can explore
+          a vast collection of images shared by our creative community. Whether
+          you are an artist looking to showcase your work or a viewer searching
+          for inspiration, our platform offers a space where art and technology
+          meet.
+        </p>
+        <p>
+          Our mission is to connect artists, photographers, designers, and
+          creatives from around the world. We strive to provide an intuitive and
+          dynamic platform that fosters creativity and collaboration. Join our
+          growing community and share your vision with the world!
+        </p>
+        <p>
+          The platform supports image uploads, categories for better
+          organization, and customizable galleries. You can also follow your
+          favorite artists, comment on their works, and engage in lively
+          discussions.
+        </p>
+        <button class="close-btn" onclick="closeInfo()">Close</button>
+      </div>
+    </div>
+
+    <div class="overlay" id="contact-modal">
+      <div class="contact">
+        <h2>Contact</h2>
+        <p>
+          Have questions, feedback, or need assistance? We are here to help!
+          Feel free to contact us using any of the methods listed below.
+        </p>
+        <h3>Email Support</h3>
+        <p>
+          For general inquiries, technical support, or any assistance, reach out
+          to our team via email:
+          <a href="mailto:support@imageboard.com">support@imageboard.com</a>
+        </p>
+
+        <h3>Phone Support</h3>
+        <p>
+          You can also call us at:
+          <strong>(123) 456-7890</strong> during business hours (9 AM - 5 PM,
+          Monday to Friday).
+        </p>
+
+        <h3>Social Media</h3>
+        <p>
+          Connect with us on social media to stay updated with the latest news,
+          featured artworks, and community events:
+        </p>
+        <ul>
+          <li>
+            <a href="https://facebook.com/imageboard" target="_blank"
+              >Facebook</a
+            >
+          </li>
+          <li>
+            <a href="https://twitter.com/imageboard" target="_blank">Twitter</a>
+          </li>
+          <li>
+            <a href="https://instagram.com/imageboard" target="_blank"
+              >Instagram</a
+            >
+          </li>
+          <li>
+            <a href="https://linkedin.com/company/imageboard" target="_blank"
+              >LinkedIn</a
+            >
+          </li>
+        </ul>
+
+        <h3>Physical Address</h3>
+        <p>
+          If you prefer to reach us via postal mail, you can send your
+          correspondence to:
+        </p>
+        <p>
+          <strong
+            >Image Board Inc.<br />
+            123 Creative Street, Suite 456<br />
+            Art City, AC 78901</strong
+          >
+        </p>
+
+        <h3>Business Hours</h3>
+        <p>
+          We are available to assist you during the following hours:
+          <br />
+          Monday to Friday: 9 AM - 5 PM<br />
+          Saturday and Sunday: Closed
+        </p>
+
+        <h3>FAQ</h3>
+        <p>
+          Before reaching out, you might find an answer to your question in our
+          <a href="/faq">Frequently Asked Questions</a> section. We cover topics
+          such as account management, image upload guidelines, and
+          troubleshooting.
+        </p>
+
+        <h3>Feedback</h3>
+        <p>
+          We appreciate your feedback to make the platform better! If you have
+          suggestions or want to report an issue, you can also submit a
+          <a href="/feedback">feedback form</a> directly through our website.
+        </p>
+
+        <button class="close-btn" onclick="closeContact()">Close</button>
+      </div>
+    </div>
+
+    <div class="overlay" id="load-mine-modal">
+      <div class="load-mine">
+        <h2>You can load your own image!</h2>
+        <p>After the loading image is sent to administrator for approval</p>
+
+        <form id="uploadForm" enctype="multipart/form-data">
+          <input
+            type="text"
+            name="image-name"
+            id="image-name"
+            placeholder="Image Name"
+            required
+          />
+          <input
+            type="text"
+            name="image-author"
+            id="image-author"
+            placeholder="Image Author"
+            required
+          />
+          <input type="file" name="image" id="image" required />
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="overlay" id="docs-modal">
+      <div class="docs">
+        <h2>Documentation</h2>
+        <p>
+          Here are some useful resources to get started with the Image Board:
+        </p>
+        <ul>
+          <li>
+            <a href="https://imageboard.com/docs">Image Board Documentation</a>
+          </li>
+          <li>
+            <a href="https://imageboard.com/docs/api"
+              >Image Board API Reference</a
+            >
+          </li>
+          <li>
+            <a href="https://imageboard.com/docs/faq">Image Board FAQs</a>
+          </li>
+        </ul>
+
+        <button class="close-btn" onclick="closeDocs()">Close</button>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/load.js"></script>
+  </body>
+</html>

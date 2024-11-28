@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel</title>
+    <style>
+      /* Overall body styling */
+      body {
+        font-family: "Arial", sans-serif;
+        background: linear-gradient(
+          135deg,
+          #2a2a2a,
+          #121212
+        ); /* Gradient background */
+        margin: 0;
+        padding: 0;
+        color: #e0e0e0; /* Light text color */
+      }
+
+      /* Header styling */
+      h1 {
+        text-align: center;
+        padding: 20px;
+        background: linear-gradient(
+          90deg,
+          #6a1b9a,
+          #4d2c81
+        ); /* Gradient purple header */
+        color: #fff;
+        margin: 0;
+        border-bottom: 4px solid #4a148c; /* Darker purple border */
+        font-size: 2.5rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Authentication form styling */
+      #authForm {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #1f1f1f;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        border-radius: 12px;
+        padding: 40px;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+
+      #authForm input {
+        width: 100%;
+        padding: 15px;
+        margin: 10px 0;
+        border: 1px solid #555;
+        border-radius: 8px;
+        font-size: 16px;
+        background-color: #333;
+        color: #fff;
+        transition: 0.3s;
+      }
+
+      #authForm input:focus {
+        border-color: #6a1b9a; /* Purple border on focus */
+        outline: none;
+        box-shadow: 0 0 8px rgba(106, 27, 154, 0.6);
+      }
+
+      #authForm button {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(
+          90deg,
+          #4d2c81,
+          #4a148c
+        ); /* Gradient button */
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      #authForm button:hover {
+        background: linear-gradient(
+          90deg,
+          #6a1b9a,
+          #4d2c81
+        ); /* Button hover gradient */
+      }
+
+      /* Images container */
+      #imagesContainer {
+        padding: 30px;
+        background-color: #2a2a2a;
+        margin: 30px auto;
+        max-width: 1000px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        border-radius: 12px;
+        display: none;
+        text-align: center;
+      }
+
+      #images h2 {
+        font-size: 2rem;
+        color: #6a1b9a;
+        margin-bottom: 20px;
+      }
+
+      #images {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        gap: 20px;
+      }
+
+      #images div {
+        width: 200px;
+        margin: 10px;
+        background-color: #333;
+        border-radius: 12px;
+        padding: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: 0.3s;
+      }
+
+      #images div:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      #images img {
+        width: 100%;
+        border-radius: 8px;
+        object-fit: cover;
+        transition: 0.3s;
+      }
+
+      #images img:hover {
+        opacity: 0.85;
+        transform: scale(1.05);
+      }
+
+      /* Delete button styling */
+      button {
+        margin-top: 10px;
+        padding: 10px 15px;
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      button:hover {
+        background-color: #c82333;
+        transform: scale(1.05);
+      }
+
+      /* Responsive design */
+      @media (max-width: 768px) {
+        #authForm {
+          padding: 30px;
+          width: 90%;
+        }
+
+        #imagesContainer {
+          padding: 20px;
+        }
+
+        #images {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        #images div {
+          width: 80%;
+          margin-bottom: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Admin Panel</h1>
+
+    <!-- Authentication form -->
+    <div id="authForm">
+      <input type="text" id="login" placeholder="Login" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button onclick="login()">Login</button>
+    </div>
+
+    <!-- Container for images after authentication -->
+    <div id="imagesContainer">
+      <h2>Images</h2>
+      <div id="images"></div>
+    </div>
+
+    <script>
+      // Authentication function
+      async function login() {
+        const login = document.getElementById("login").value;
+        const password = document.getElementById("password").value;
+
+        const response = await fetch("/admin/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ login, password }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          alert("Authentication successful!");
+          loadImages(); // Load images on successful authentication
+        } else {
+          alert(data.message);
+        }
+      }
+
+      // Function to load images
+      async function loadImages() {
+        const response = await fetch("/admin/images");
+        const data = await response.json();
+
+        if (data.success) {
+          const imagesContainer = document.getElementById("imagesContainer");
+          const imagesElement = document.getElementById("images");
+
+          imagesElement.innerHTML = ""; // Clear the image container
+
+          data.images.forEach((image) => {
+            const imgWrapper = document.createElement("div");
+            const img = document.createElement("img");
+            img.src = "image/" + image.url; // URL from preload.json
+            img.alt = image.name;
+
+            // Delete button for each image
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Delete";
+            deleteButton.onclick = () => deleteImage(image.id);
+
+            imgWrapper.appendChild(img);
+            imgWrapper.appendChild(deleteButton);
+            imagesElement.appendChild(imgWrapper);
+          });
+
+          imagesContainer.style.display = "block"; // Show the images container
+          document.getElementById("authForm").style.display = "none"; // Hide auth form
+        } else {
+          alert(data.message);
+        }
+      }
+
+      // Function to delete an image
+      async function deleteImage(imageId) {
+        const response = await fetch(`/admin/delete-image/${imageId}`, {
+          method: "DELETE",
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          alert("Image deleted successfully!");
+          loadImages(); // Reload images after deletion
+        } else {
+          alert(data.message);
+        }
+      }
+    </script>
+  </body>
+</html>

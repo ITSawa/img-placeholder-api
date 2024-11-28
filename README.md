@@ -36,6 +36,7 @@ php
 project/
 
 │
+
 ├── server/                 # Server directory
 
 │   ├── src/                # Server source code
